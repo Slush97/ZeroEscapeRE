@@ -2,6 +2,30 @@
 
 This project aims to allow extracting resources from data files of the Zero Escape video game duology for PC.
 
+## Quick start (fork additions)
+
+`run_all.py` runs the whole extract + convert pipeline in one command on Windows, macOS or Linux. It replaces the bash scripts (no `find`/`unzip`, no libmagic, no C compiler) and finds character/room archives by content instead of the hardcoded file indices in `auto_convert_ze2_models.sh`, which break on any game build that differs from the original author's.
+
+Only requirement is Python 3.11 (bpy is pinned to it).
+
+Windows:
+
+```
+setup.bat
+.venv\Scripts\activate
+python run_all.py "C:\path\to\ze2_data_en_us.bin"
+```
+
+macOS/Linux:
+
+```
+python3.11 -m venv .venv && source .venv/bin/activate
+pip install -r requirements.txt && pip install -e helper
+python run_all.py /path/to/ze2_data_en_us.bin
+```
+
+Output: `workdir/converted_models/*.blend` (one per character animation) and `workdir/converted_rooms/*.blend`. The `[2/4]`/`[3/4]` lines print how many archives were found.
+
 ## Environment setup
 
 ```
