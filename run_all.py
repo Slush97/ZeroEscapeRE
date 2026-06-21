@@ -59,7 +59,12 @@ def build_env():
         encoding="utf-8",
     )
     env = dict(os.environ)
-    env["PYTHONPATH"] = str(compat) + os.pathsep + env.get("PYTHONPATH", "")
+    # NB: never leave a trailing os.pathsep. An empty PYTHONPATH entry is read
+    # as the current dir (= repo root), which puts the broken `helper/` package
+    # on sys.path, shadows the editable-install module, and crashes every
+    # subprocess that does `from helper import *`.
+    existing = env.get("PYTHONPATH", "")
+    env["PYTHONPATH"] = str(compat) + (os.pathsep + existing if existing else "")
     return env
 
 
